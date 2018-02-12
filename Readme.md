@@ -1,5 +1,4 @@
 # Descripción
-===========
 Un sencillo cliente de [WhatsApp Web](https://web.whatsapp.com). Este proyecto **NO ES UN CLIENTE OFICIAL** ni se tiene alguna dependencia con la empresa.
 
 ## Feature
