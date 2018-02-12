@@ -1,0 +1,16 @@
+{
+  "name": "whatsWrap",
+  "productName": "WhatsWrap",
+  "version": "0.1.0",
+  "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
+  "license": "MIT",
+  "main": "./scripts/init.js",
+  "wvUrl": "https://web.whatsapp.com/",
+  "dev": false,
+  "dependencies": {
+    "app-module-path": "^2.2.0",
+    "electron": "1.7.10",
+    "request": "^2.83.0",
+    "url": "^0.11.0"
+  }
+}

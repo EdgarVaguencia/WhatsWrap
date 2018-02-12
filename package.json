@@ -1,0 +1,20 @@
+{
+  "name": "Whatswrap",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
+  "devDependencies": {
+    "clean-webpack-plugin": "^0.1.17",
+    "electron-installer-windows": "^0.2.0",
+    "electron-packager": "^11.0.0",
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-typescript": "^3.2.3",
+    "gulp-uglify": "^3.0.0",
+    "run-sequence": "^2.2.0",
+    "typescript": "2.1.6",
+    "uglifyjs-webpack-plugin": "^1.1.5",
+    "webpack": "^3.10.0",
+    "webpack-stream": "^4.0.0"
+  }
+}
