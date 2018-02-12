@@ -2,6 +2,8 @@ const gulp = require('gulp')
 const _$ = require('gulp-load-plugins')()
 const runs = require('run-sequence')
 const ts = _$.typescript.createProject('tsconfig.json')
+const winInstall = require('electron-windows-installer')
+const packager = require('electron-packager')
 // const webpack = require('webpack-stream')
 
 const config = {
@@ -70,4 +72,32 @@ gulp.task('watch', () => {
   gulp.watch('src/*.html', ['html'])
   gulp.watch('src/scripts/**/**/*.ts', ['build'])
   gulp.watch('src/package.json', ['build'])
+})
+
+gulp.task('pack:win32', (done) => {
+  return packager({
+    dir: './dist',
+    arch: 'x64',
+    platform: 'win32',
+    out: './build',
+    overwrite: true,
+    asar: false,
+    packageManager: 'yarn'
+  }).then((pathFiles) => console.info(pathFiles))
+})
+
+gulp.task('dist:win32', ['pack:win32'], (done) => {
+  if (process.platform !== 'win32') {
+    return false
+  }
+
+  winInstall({
+    appDirectory: './build/WhatsWrap-win32-x64',
+    outputDirectory: './build',
+    authors: 'Edgar Vaguencia',
+    noMsi: true,
+    exe: 'WhatsWrap.exe',
+    iconUrl: 'https://www.online-convert.com/downloadFile/307e52ab-c7b4-4260-8dae-61c59b1b4507/60eb1120-b38b-4bd3-9a27-e2699b50b05a',
+    arch: 'ia32'
+  }).then(done).catch(done)
 })
