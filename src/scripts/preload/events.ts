@@ -3,7 +3,7 @@ declare var Store: any
 
 (() => {
   ipcRenderer.on('sos', () => {
-    var me = Store.Conn.me
+    var me = getMe()
     if (Store.Chat.get(me) === undefined){
       Store.Chat.add({cmd: 'action', id: me}, {merge: !0})
     }
@@ -11,13 +11,21 @@ declare var Store: any
   })
 
   ipcRenderer.on('updateStatus', (evt, data) => {
-    log('updateStatus...')
-    if (Store.Status.canSetMyStatus()) {
+    var currentStatus = Store.Status.get(`${getMe()}`).status
+    if (Store.Status.canSetMyStatus() && data.txt !== currentStatus) {
       Store.Status.setMyStatus(data.txt)
     }else {
       log('No es posible actualizar status...')
     }
   })
+
+  function getMe():string {
+    let me:string = ""
+    if (me.length === 0) {
+      me = Store.Conn.me
+    }
+    return me
+  }
 
   function log(txt) {
     console.info(`${getTime()} => ` + txt)
