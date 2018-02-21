@@ -15,7 +15,8 @@ class LastFm {
     delay: 1000 * 60 * 3, // 3 mins
     url: 'http://ws.audioscrobbler.com/2.0/?limit=1&format=json&method=user.getrecenttracks&user='
   }
-  utils: util
+  private utils: util
+  isConnected: boolean = false
 
   constructor() {
     this.utils = new util()
@@ -27,6 +28,7 @@ class LastFm {
       this.updateStatus()
     }, this.options.delay)
     this.updateStatus()
+    this.isConnected = true
   }
 
   updateStatus() {
@@ -42,8 +44,10 @@ class LastFm {
       request.get(url, (err, resp, body) => {
         if (resp.statusCode === 200) {
           var data = JSON.parse(body)
+          this.isConnected = this.isConnected ? this.isConnected : true
           resolve(data.recenttracks.track[0])
         }else {
+          this.isConnected = false
           reject(resp.statusCode)
         }
       })

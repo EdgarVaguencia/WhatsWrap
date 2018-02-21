@@ -1,6 +1,7 @@
 import {app, Menu, webContents} from 'electron'
 const mainWindow = require('./browserWindow').default
 const ipcListener = require('./manager/ipcListener').default
+const manifest = require('../package.json')
 
 app.on('ready', () => {
   let browser = new mainWindow()
@@ -8,7 +9,7 @@ app.on('ready', () => {
 
   new ipcListener(browser).listen()
 
-  createMenu()
+  createMenu(browser)
 })
 
 function getWebView() {
@@ -17,7 +18,7 @@ function getWebView() {
     .pop()
 }
 
-function createMenu() {
+function createMenu(browserWindow) {
   const menuItmes = [
     {
       label: 'Mensages',
@@ -32,6 +33,30 @@ function createMenu() {
               console.info('No se que paso')
             }
           }
+        }
+      ],
+    },
+    {
+      label: 'Servicios',
+      submenu: [
+        {
+          label: 'Last-Fm',
+          submenu: [
+            {
+              label: 'Actualizar Status',
+              click() {
+                browserWindow.wb.webContents.send('statusUpdate')
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      label: 'Ayuda',
+      submenu: [
+        {
+          label: 'V ' + manifest.version
         }
       ]
     }

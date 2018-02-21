@@ -82,7 +82,8 @@ gulp.task('pack:win32', (done) => {
     out: './build',
     overwrite: true,
     asar: false,
-    packageManager: 'yarn'
+    packageManager: 'yarn',
+    icon: './icons/win-icon.ico'
   }).then((pathFiles) => console.info(pathFiles))
 })
 
@@ -97,7 +98,7 @@ gulp.task('dist:win32', ['pack:win32'], (done) => {
     authors: 'Edgar Vaguencia',
     noMsi: true,
     exe: 'WhatsWrap.exe',
-    iconUrl: 'https://www.online-convert.com/downloadFile/307e52ab-c7b4-4260-8dae-61c59b1b4507/60eb1120-b38b-4bd3-9a27-e2699b50b05a',
+    iconUrl: 'https://raw.githubusercontent.com/EdgarVaguencia/WhatsWrap/master/icons/win-icon.ico',
     arch: 'ia32'
   }).then(done).catch(done)
 })
