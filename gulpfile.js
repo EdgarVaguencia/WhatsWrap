@@ -2,8 +2,9 @@ const gulp = require('gulp')
 const _$ = require('gulp-load-plugins')()
 const runs = require('run-sequence')
 const ts = _$.typescript.createProject('tsconfig.json')
-const winInstall = require('electron-windows-installer')
 const packager = require('electron-packager')
+const winInstall = require('electron-windows-installer')
+const debInstall = require('electron-installer-debian')
 // const webpack = require('webpack-stream')
 
 const config = {
@@ -84,7 +85,7 @@ gulp.task('pack:win32', (done) => {
     asar: false,
     packageManager: 'yarn',
     icon: './icons/win-icon.ico'
-  }).then((pathFiles) => console.info(pathFiles))
+  }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`))
 })
 
 gulp.task('dist:win32', ['pack:win32'], (done) => {
@@ -100,5 +101,38 @@ gulp.task('dist:win32', ['pack:win32'], (done) => {
     exe: 'WhatsWrap.exe',
     iconUrl: 'https://raw.githubusercontent.com/EdgarVaguencia/WhatsWrap/master/icons/win-icon.ico',
     arch: 'ia32'
-  }).then(done).catch(done)
+  }).then(() => console.info('Windows Success')).catch(done)
+})
+
+gulp.task('pack:linux64', (done) => {
+  return packager({
+    dir: './dist',
+    arch: 'x64',
+    platform: 'linux',
+    out: './build',
+    overwrite: true,
+    asar: false,
+    packageManager: 'yarn',
+    icon: './icons/win-icon.png'
+  }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`))
+})
+
+gulp.task('dist:linux64', ['pack:linux64'], (done) => {
+  if (process.platform !== 'linux') {
+    return false
+  }
+
+  debInstall({
+    productName: 'whatswrap',
+    name: 'whatswrap',
+    genericName: 'whatswrap',
+    bin: 'WhatsWrap',
+    src: './build/WhatsWrap-linux-x64/',
+    dest: './build/',
+    arch: 'amd64',
+    categories: ['GNOME', 'GTK', 'Utility', 'Social'],
+    icon: './icons/win-icon.png',
+    mimeType: ['text/plain'],
+    homepage: 'https://github.com/EdgarVaguencia/WhatsWrap'
+  }).then(() => console.info('Linux Succeess')).catch(err => { console.error(err, err.stack); process.exit(1) })
 })

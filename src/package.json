@@ -1,6 +1,7 @@
 {
   "name": "whatsWrap",
   "productName": "WhatsWrap",
+  "description": "Mejorando la experiencia de WhatsApp Web -- No es un producto oficial",
   "version": "0.1.2",
   "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
   "license": "MIT",
