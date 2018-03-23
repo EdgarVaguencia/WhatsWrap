@@ -8,6 +8,9 @@
   "main": "./scripts/init.js",
   "wvUrl": "https://web.whatsapp.com/",
   "dev": false,
+  "scripts": {
+    "start": "electron ./"
+  },
   "dependencies": {
     "app-module-path": "^2.2.0",
     "electron": "1.7.10",

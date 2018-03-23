@@ -75,7 +75,7 @@ gulp.task('watch', () => {
   gulp.watch('src/package.json', ['build'])
 })
 
-gulp.task('pack:win32', (done) => {
+gulp.task('pack:win32', ['build'], (done) => {
   return packager({
     dir: './dist',
     arch: 'x64',
@@ -104,7 +104,7 @@ gulp.task('dist:win32', ['pack:win32'], (done) => {
   }).then(() => console.info('Windows Success')).catch(done)
 })
 
-gulp.task('pack:linux64', (done) => {
+gulp.task('pack:linux64', ['build'], (done) => {
   return packager({
     dir: './dist',
     arch: 'x64',

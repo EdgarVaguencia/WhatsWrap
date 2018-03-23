@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Debug Main Proccess",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceRoot}/src",
+            "runtimeExecutable": "${workspaceRoot}/src/node_modules/.bin/electron",
+            "windows": {
+                "runtimeExecutable": "${workspaceRoot}\\src\\node_modules\\.bin\\electron.cmd"
+            },
+            "program": "${workspaceRoot}/src/scripts/init.js",
+            "args": [
+                "start"
+            ],
+            "timeout": 20000
+        }
+    ],
+    "compounds": []
+}
