@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "./scripts/init.js",
   "wvUrl": "https://web.whatsapp.com/",
-  "dev": false,
+  "dev": true,
   "scripts": {
     "start": "electron ./"
   },

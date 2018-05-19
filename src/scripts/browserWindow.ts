@@ -11,7 +11,7 @@ class mainWindow {
   private url = require('url').format({
     protocol: 'file',
     slashes: true,
-    pathname: require('path').join(__dirname, '../index.html')
+    pathname: require('path').join(__dirname, '../html/index.html')
   })
   public wb
 
@@ -23,6 +23,7 @@ class mainWindow {
 
     if (manifest.dev){
       this.wb.webContents.openDevTools()
+      this.wb.maximize()
     }
 
     this.generalEvents()

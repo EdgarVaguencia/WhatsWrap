@@ -17,10 +17,13 @@ const config = {
   out: 'dist/scripts/',
   js: [
     ['browser/', '*.js'],
+    ['browser/components/', '*.js'],
     ['browser/services/', '*.js'],
     ['browser/webView/', '*.js'],
-    ['preload/', '*.js'],
     ['manager/', '*.js'],
+    ['preload/', '*.js'],
+    ['render/', '*.js'],
+    ['tools/', '*.js'],
     ['/', 'browserWindow.js'],
     ['/', 'init.js']
   ]
@@ -45,8 +48,14 @@ gulp.task('js', ['ts'], () => {
 })
 
 gulp.task('html', () => {
-  return gulp.src('src/*.html')
-  .pipe(gulp.dest('dist'))
+  return gulp.src('src/html/*.html')
+  .pipe(gulp.dest('dist/html'))
+})
+
+gulp.task('stylus', () => {
+  return gulp.src('src/style/*.styl')
+  .pipe(_$.stylus())
+  .pipe(gulp.dest('dist/style'))
 })
 
 gulp.task('node', () => {
@@ -67,7 +76,7 @@ gulp.task('package', () => {
 })
 
 gulp.task('cpFiles', () => {
-  runs('js', 'html', 'package', 'node')
+  runs('js', 'html', 'stylus', 'package', 'node')
 })
 
 gulp.task('build', (cb) => {
@@ -75,9 +84,10 @@ gulp.task('build', (cb) => {
 })
 
 gulp.task('watch', () => {
-  gulp.watch('src/*.html', ['html'])
-  gulp.watch('src/scripts/**/**/*.ts', ['build'])
-  gulp.watch('src/package.json', ['build'])
+  gulp.watch('src/html/*.html', ['html'])
+  gulp.watch('src/style/*.styl', ['stylus'])
+  gulp.watch('src/scripts/**/**/*.ts', ['js'])
+  gulp.watch('src/package.json', ['package', 'node'])
 })
 
 gulp.task('pack:win32', ['build'], (done) => {

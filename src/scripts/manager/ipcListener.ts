@@ -14,6 +14,12 @@ class ipcListener {
     ipcMain.on('isConnected', (me:string) => {
       this.browserWindow.wb.webContents.send('initServices')
     })
+    /*
+      Se recibe Mensaje
+    */
+    ipcMain.on('newMessage', (event:string, opts: Object) => {
+      this.browserWindow.wb.webContents.send('fireNotification', opts)
+    })
   }
 
 }

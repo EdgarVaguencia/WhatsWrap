@@ -1,13 +1,16 @@
 import {ipcRenderer} from 'electron'
-const lastFmService = require('services/lastFm').default
+import notificacion from '../components'
+import LastFm from '../services'
+import {default as sys} from '../../tools/platform'
 
-let lf
+let lf, not
 
 /*
   Iniciamos los servicios
 */
 ipcRenderer.on('initServices', () => {
-  lf = new lastFmService()
+  not = new notificacion()
+  lf = new LastFm()
   lf.init()
 })
 
@@ -17,5 +20,14 @@ ipcRenderer.on('initServices', () => {
 ipcRenderer.on('statusUpdate', () => {
   if (lf && lf.isConnected) {
     lf.updateStatus()
+  }
+})
+
+/**
+ * Se muestra notificación de nuevo mensaje
+ */
+ipcRenderer.on('fireNotification', (event, opts) => {
+  if (!sys.isLinux) {
+    not.fireNotification(opts)
   }
 })

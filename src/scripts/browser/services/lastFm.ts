@@ -1,3 +1,4 @@
+import {ipcRenderer} from 'electron'
 import * as request from 'request'
 import util from '../../manager/utils'
 
@@ -10,8 +11,8 @@ class lf {
 
 class LastFm {
   private options = {
-    user: '',
-    apiKey: '',
+    user: 'EdgarKmarita',
+    apiKey: 'ebb288a9fba45278c0b326b7766f8911',
     delay: 1000 * 60 * 3, // 3 mins
     url: 'http://ws.audioscrobbler.com/2.0/?limit=1&format=json&method=user.getrecenttracks&user='
   }
@@ -47,6 +48,7 @@ class LastFm {
           this.isConnected = this.isConnected ? this.isConnected : true
           resolve(data.recenttracks.track[0])
         }else {
+          ipcRenderer.send('newMessage',{tag: 'WatsWrap', body: 'Error al intentar conectarse', 'icon': ''})
           this.isConnected = false
           reject(resp.statusCode)
         }
