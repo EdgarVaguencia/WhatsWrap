@@ -1,13 +1,13 @@
 {
-  "name": "whatsWrap",
+  "name": "whatswrap",
   "productName": "WhatsWrap",
   "description": "Mejorando la experiencia de WhatsApp Web -- No es un producto oficial",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
   "license": "MIT",
   "main": "./scripts/init.js",
   "wvUrl": "https://web.whatsapp.com/",
-  "dev": true,
+  "dev": false,
   "scripts": {
     "start": "electron ./"
   },
