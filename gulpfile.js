@@ -99,7 +99,8 @@ gulp.task('pack:win32', ['build'], (done) => {
     overwrite: true,
     asar: false,
     packageManager: 'yarn',
-    icon: './icons/win-icon.ico'
+    icon: './icons/win-icon.ico',
+    executableName: manifest.productName + '-' + manifest.version
   }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`))
 })
 
@@ -113,7 +114,8 @@ gulp.task('dist:win32', ['pack:win32'], (done) => {
     outputDirectory: './build',
     authors: 'Edgar Vaguencia',
     noMsi: true,
-    exe: manifest.productName + '.exe',
+    exe: manifest.productName + '-' + manifest.version + '.exe',
+    setupExe: manifest.productName + '-' + manifest.version + '.exe',
     iconUrl: 'https://raw.githubusercontent.com/EdgarVaguencia/WhatsWrap/master/icons/win-icon.ico',
     arch: 'ia32'
   }).then(() => console.info('Windows Success')).catch(done)
@@ -151,3 +153,5 @@ gulp.task('dist:linux64', ['pack:linux64'], (done) => {
     homepage: 'https://github.com/EdgarVaguencia/WhatsWrap'
   }).then(() => console.info('Linux Succeess')).catch(err => { console.error(err, err.stack); process.exit(1) })
 })
+
+gulp.task('default', ['watch'])
