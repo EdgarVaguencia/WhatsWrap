@@ -1,7 +1,7 @@
-import { remote } from 'electron'
+import {remote} from 'electron'
 const manifest = require('../../../package.json')
 
-class notificacion {
+export default class notificacion {
   private notifications
 
   constructor() {
@@ -20,7 +20,8 @@ class notificacion {
       alwaysOnTop: true,
       webPreferences: {
         webSecurity: false
-      }
+      },
+      useContentSize: true
     })
 
     this.notifications[ide].on('closed', () => {
@@ -35,7 +36,7 @@ class notificacion {
       slashes: true,
       pathname: require('path').join(remote.app.getAppPath(), 'html','notification.html'),
       query: {
-        title: encodeURIComponent(opts.tag || ''),
+        title: encodeURIComponent(opts.title || ''),
         body: encodeURIComponent(opts.body || ''),
         icon: encodeURIComponent(opts.icon || '')
       }
@@ -48,5 +49,3 @@ class notificacion {
     }
   }
 }
-
-export default notificacion

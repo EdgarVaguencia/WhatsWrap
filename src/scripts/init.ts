@@ -1,18 +1,37 @@
-import {app, Menu, webContents, autoUpdater} from 'electron'
-const mainWindow = require('./browserWindow').default
-const ipcListener = require('./manager/ipcListener').default
+import {app, Menu, webContents} from 'electron'
+import mainWindow from './browserWindow'
+import ipcListener from './manager/ipcListener'
 const manifest = require('../package.json')
 const log = require('electron-log')
+let browser:mainWindow = null
+
+const isOnlyBlock = app.requestSingleInstanceLock()
+
+if (!isOnlyBlock && !manifest.dev) {
+  app.quit()
+}
+
+app.on('second-instance', () => {
+  if (browser){
+    if (browser.wb.isMinimized()) {
+      browser.wb.restore()
+    }
+    browser.wb.focus()
+    browser.wb.show()
+  }
+})
 
 app.on('ready', () => {
-  let browser = new mainWindow()
+  browser = new mainWindow()
   browser.initWebBrowser()
-
-  checkUpdate()
 
   new ipcListener(browser).listen()
 
   createMenu(browser)
+})
+
+app.on('window-all-closed', () => {
+  app.quit()
 })
 
 function getWebView() {
@@ -35,6 +54,12 @@ function createMenu(browserWindow): void {
             } else {
               log.info('No se que paso')
             }
+          }
+        },
+        {
+          label: 'Abrir archivo',
+          click() {
+            browserWindow.wb.webContents.send('uploadFile')
           }
         }
       ],
@@ -59,40 +84,11 @@ function createMenu(browserWindow): void {
       label: 'Ayuda',
       submenu: [
         {
-          label: 'V ' + manifest.version
+          label: 'V ' + manifest.dev ? manifest.version + ' - dev': manifest.version
         }
       ]
     }
   ]
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuItmes))
-}
-
-function checkUpdate() {
-  let feedUrl = 'https://update.electronjs.org/EdgarVaguencia/WhatsWrap/win32/'
-  if (process.platform === 'win32') {
-    feedUrl += manifest.version
-    log.info(feedUrl)
-
-    autoUpdater.setFeedURL(feedUrl)
-
-    autoUpdater.checkForUpdates()
-
-    autoUpdater.on('error', er => {
-      log.info('Error Update: ',er)
-    })
-
-    autoUpdater.on('checking-for-update', ch => {
-      log.info('Check Update: ',ch)
-    })
-
-    autoUpdater.on('update-available', d => {
-      log.info('New update: ',d)
-    })
-
-    autoUpdater.on('update-downloaded', dow => {
-      log.info('Is Downloaded: ',dow)
-      setTimeout(autoUpdater.quitAndInstall(), 3000)
-    })
-  }
 }

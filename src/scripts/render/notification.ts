@@ -1,11 +1,16 @@
 const params = require('url').parse(window.location.href, true).query
 
 function closeWindow() {
-    window.close()
+  window.close()
+}
+
+function onClick() {
+  closeWindow()
 }
 
 function onLoad() {
-    window.setTimeout(closeWindow, 6500)
+  window.setTimeout(closeWindow, 6000)
+  document.addEventListener('click', onClick)
 }
 
 document.getElementById('title').innerHTML = decodeURIComponent(params.title || 'Titulo')

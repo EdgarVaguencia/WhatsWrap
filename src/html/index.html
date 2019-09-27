@@ -10,9 +10,9 @@
     </style>
   </head>
   <body>
-    <webview id="wv" preload="../scripts/preload/preload.js"></webview>
-    <script src="../scripts/browser/index.js"></script>
-    <scrpt>
-    </scrpt>
+    <webview id="wv" preload="../scripts/preload/preload.js" partition="persist:tmp1"></webview>
+    <script>
+      require('../scripts/browser/index.js')
+    </script>
   </body>
 </html>

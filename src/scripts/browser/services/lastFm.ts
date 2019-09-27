@@ -2,44 +2,42 @@ import {ipcRenderer} from 'electron'
 import * as request from 'request'
 import util from '../../manager/utils'
 
-class lf {
+interface lf {
   name: string
   artist: {
     '#text': string
   }
 }
 
-class LastFm {
+export default class LastFm extends util {
   private options = {
     user: 'EdgarKmarita',
-    apiKey: 'ebb288a9fba45278c0b326b7766f8911',
+    apiKey: '',
     delay: 1000 * 60 * 3, // 3 mins
     url: 'http://ws.audioscrobbler.com/2.0/?limit=1&format=json&method=user.getrecenttracks&user='
   }
-  private utils: util
+  // private utils: util
   isConnected: boolean = false
 
-  constructor() {
-    this.utils = new util()
-  }
+  // constructor() {this.utils = new util() }
 
   init() {
-    this.utils.log('init LastFm...')
+    this.log('init LastFm...')
     setInterval(() => {
-      this.updateStatus()
+      this.updStatus()
     }, this.options.delay)
-    this.updateStatus()
+    this.updStatus()
     this.isConnected = true
   }
 
-  updateStatus() {
+  updStatus() {
     this.getCurrentScrobbling().then((d:lf) => {
-      this.utils.updateStatus(`${this.utils.getEmoji('headphone')} ${d.name} By ${d.artist['#text']}`)
+      this.updateStatus(`${this.getEmoji('headphone')} ${d.name} By ${d.artist['#text']}`)
     })
   }
 
   async getCurrentScrobbling() {
-    this.utils.log('getCurrentScrobbling...')
+    this.log('getCurrentScrobbling...')
     return await new Promise((resolve, reject) => {
       var url = `${this.options.url}${this.options.user}&api_key=${this.options.apiKey}`
       request.get(url, (err, resp, body) => {
@@ -56,5 +54,3 @@ class LastFm {
     })
   }
 }
-
-export default LastFm

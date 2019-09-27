@@ -1,5 +1,6 @@
-import {ipcMain, shell} from 'electron'
-class ipcListener {
+import {ipcMain, shell, ipcRenderer} from 'electron'
+
+export default class ipcListener {
 
   browserWindow
 
@@ -7,7 +8,9 @@ class ipcListener {
     this.browserWindow = browserWindow
   }
 
-  listen(){
+
+
+  listen() {
     /**
      * WhatsApp esta cargado completamente
      */
@@ -31,5 +34,3 @@ class ipcListener {
   }
 
 }
-
-export default ipcListener

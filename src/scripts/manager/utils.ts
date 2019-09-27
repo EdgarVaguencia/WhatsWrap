@@ -1,7 +1,9 @@
+import * as fs from 'fs'
 import emoji from './emoji'
 
-class utils {
+export default class utils {
   private wv
+  private expRegEmoji: RegExp = new RegExp(':([a-z]*(\\s)*[a-z]*)+:','g')
 
   constructor() {}
 
@@ -23,7 +25,7 @@ class utils {
   /*
     Actualiza el status de tu perfil
   */
-  updateStatus(txt) {
+  updateStatus(txt:string) {
     this.getWebView()
     this.wv.send('updateStatus', {txt: txt})
   }
@@ -39,6 +41,31 @@ class utils {
     }
   }
 
-}
+  /**
+   * @param txt Mensaje con emoji
+   */
+  parseMsg(txt: string): string {
+    var emojis = txt.match(this.expRegEmoji)
 
-export default utils
+    if (emojis) {
+      emojis.forEach((v, i) => {
+        txt = txt.replace(v, this.getEmoji(v.replace(/:/g, '')))
+      })
+    }
+    return txt
+  }
+
+  /**
+   * @param data Objeto de datos que contiene le teléfono y mensaje a enviar
+   */
+  sendMenssage(data: any): void {
+    this.getWebView()
+    this.wv.send('sendMessage', data)
+  }
+
+  updateTheme(pathFile) {
+    this.getWebView()
+    this.wv.send('changeStyle', fs.readFileSync(pathFile, 'utf-8'))
+  }
+
+}

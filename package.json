@@ -3,19 +3,26 @@
   "version": "0.1.0",
   "license": "MIT",
   "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
+  "scripts": {
+    "build": "tsc && gulp build",
+    "watch": "tsc -w & gulp",
+    "start": "yarn run build && yarn electron ./dist/"
+  },
   "devDependencies": {
     "electron-packager": "^11.0.0",
     "gulp": "^3.9.1",
     "gulp-load-plugins": "^1.5.0",
     "gulp-stylus": "^2.7.0",
-    "gulp-typescript": "^3.2.3",
     "gulp-uglify": "^3.0.0",
     "run-sequence": "^2.2.0",
-    "typescript": "2.1.6"
+    "typescript": "^3.0.3"
   },
   "optionalDependencies": {
     "electron-installer-debian": "^0.8.1",
     "electron-windows-installer": "^1.7.8"
   },
-  "dependencies": {}
+  "dependencies": {
+    "electron": "3.0.0",
+    "global": "^4.3.2"
+  }
 }

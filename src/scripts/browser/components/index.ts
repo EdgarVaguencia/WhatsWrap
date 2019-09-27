@@ -1,1 +1,5 @@
-export default require('./noti-' + process.platform).default
+const notificacion = require('./noti-' + process.platform).default
+
+export {
+  notificacion
+}

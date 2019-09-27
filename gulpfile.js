@@ -1,61 +1,19 @@
 const gulp = require('gulp')
 const _$ = require('gulp-load-plugins')()
 const runs = require('run-sequence')
-const ts = _$.typescript.createProject('tsconfig.json')
 const packager = require('electron-packager')
 const manifest = require('./src/package.json')
 let winInstall, debInstall
-if (process.platform === 'linux') {
-  debInstall = require('electron-installer-debian')
-} else if (process.platform === 'win32') {
-  winInstall = require('electron-windows-installer')
-}
-// const webpack = require('webpack-stream')
-
-const config = {
-  origin: 'src/scripts/',
-  out: 'dist/scripts/',
-  js: [
-    ['browser/', '*.js'],
-    ['browser/components/', '*.js'],
-    ['browser/services/', '*.js'],
-    ['browser/webView/', '*.js'],
-    ['manager/', '*.js'],
-    ['preload/', '*.js'],
-    ['render/', '*.js'],
-    ['tools/', '*.js'],
-    ['/', 'browserWindow.js'],
-    ['/', 'init.js']
-  ]
-}
-
-gulp.task('ts', () => {
-  return ts.src()
-  .pipe(ts())
-  .js.pipe(gulp.dest('src/scripts'))
-})
-
-gulp.task('js', ['ts'], () => {
-  // gulp.src('src/scripts/browser/index.js')
-  // .pipe(webpack(require('./webpack.config')))
-  // .pipe(gulp.dest('dist/scripts/browser'))
-
-  config.js.forEach((item) => {
-    gulp.src(config.origin + item[0] + item[1])
-    .pipe(_$.uglify())
-    .pipe(gulp.dest(config.out + item[0]))
-  })
-})
 
 gulp.task('html', () => {
   return gulp.src('src/html/*.html')
-  .pipe(gulp.dest('dist/html'))
+    .pipe(gulp.dest('dist/html'))
 })
 
 gulp.task('stylus', () => {
   return gulp.src('src/style/*.styl')
-  .pipe(_$.stylus())
-  .pipe(gulp.dest('dist/style'))
+    .pipe(_$.stylus())
+    .pipe(gulp.dest('dist/style'))
 })
 
 gulp.task('node', () => {
@@ -67,41 +25,57 @@ gulp.task('node', () => {
       '!src/node_modules/**/test/**'
     ]
   )
-  .pipe(gulp.dest('dist/node_modules'))
+    .pipe(gulp.dest('dist/node_modules'))
 })
 
 gulp.task('package', () => {
   return gulp.src('src/package.json')
-  .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist'))
 })
 
-gulp.task('cpFiles', () => {
-  runs('js', 'html', 'stylus', 'package', 'node')
+gulp.task('md', () => {
+  return gulp.src('src/*.md')
+    .pipe(gulp.dest('dist'))
+})
+
+gulp.task('js', () => {
+  return gulp.src('dist/scripts/**/*.js')
+    .pipe(_$.uglify())
+    .pipe(gulp.dest('dist/scripts'))
+})
+
+gulp.task('cpFiles', (cb) => {
+  runs('html', 'stylus', 'package', 'node', cb)
 })
 
 gulp.task('build', (cb) => {
   runs('cpFiles', cb)
 })
 
-gulp.task('watch', () => {
+gulp.task('watch', ['build'], () => {
   gulp.watch('src/html/*.html', ['html'])
   gulp.watch('src/style/*.styl', ['stylus'])
-  gulp.watch('src/scripts/**/**/*.ts', ['js'])
   gulp.watch('src/package.json', ['package', 'node'])
 })
 
-gulp.task('pack:win32', ['build'], (done) => {
+gulp.task('dist', (cb) => {
+  runs('js', 'md', cb)
+})
+
+gulp.task('pack:win32', ['build', 'dist'], (done) => {
+  const isDev = manifest.dev ? '_dev' : ''
+
   return packager({
     dir: './dist',
     arch: 'x64',
     platform: 'win32',
     out: './build',
     overwrite: true,
-    asar: false,
+    asar: true,
     packageManager: 'yarn',
-    icon: './icons/win-icon.ico',
-    executableName: manifest.productName + '-' + manifest.version
-  }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`))
+    executableName: '' + manifest.productName + isDev,
+    icon: './icons/win-icon.ico'
+  }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`)).catch(err => { console.error(err, err.stack); process.exit(1) })
 })
 
 gulp.task('dist:win32', ['pack:win32'], (done) => {
@@ -109,19 +83,22 @@ gulp.task('dist:win32', ['pack:win32'], (done) => {
     return false
   }
 
+  winInstall = require('electron-windows-installer')
+  const isDev = manifest.dev ? '_dev' : ''
+
   winInstall({
     appDirectory: './build/' + manifest.productName + '-win32-x64',
     outputDirectory: './build',
     authors: 'Edgar Vaguencia',
     noMsi: true,
-    exe: manifest.productName + '-' + manifest.version + '.exe',
-    setupExe: manifest.productName + '-' + manifest.version + '.exe',
+    exe: manifest.productName + isDev + '.exe',
+    setupExe: 'win32-x64-' + manifest.productName + '-' + manifest.version + isDev + '.exe',
     iconUrl: 'https://raw.githubusercontent.com/EdgarVaguencia/WhatsWrap/master/icons/win-icon.ico',
     arch: 'ia32'
-  }).then(() => console.info('Windows Success')).catch(done)
+  }).then(() => { console.info('Windows Success'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 })
 
-gulp.task('pack:linux64', ['build'], (done) => {
+gulp.task('pack:linux64', ['build', 'dist'], (done) => {
   return packager({
     dir: './dist',
     arch: 'x64',
@@ -131,7 +108,7 @@ gulp.task('pack:linux64', ['build'], (done) => {
     asar: false,
     packageManager: 'yarn',
     icon: './icons/win-icon.png'
-  }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`))
+  }).then((pathFiles) => { console.info(`Create Pack: ${pathFiles[0]}`); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 })
 
 gulp.task('dist:linux64', ['pack:linux64'], (done) => {
@@ -139,6 +116,7 @@ gulp.task('dist:linux64', ['pack:linux64'], (done) => {
     return false
   }
 
+  debInstall = require('electron-installer-debian')
   debInstall({
     productName: manifest.name,
     name: manifest.name,
@@ -151,7 +129,7 @@ gulp.task('dist:linux64', ['pack:linux64'], (done) => {
     icon: './icons/win-icon.png',
     mimeType: ['text/plain'],
     homepage: 'https://github.com/EdgarVaguencia/WhatsWrap'
-  }).then(() => console.info('Linux Succeess')).catch(err => { console.error(err, err.stack); process.exit(1) })
+  }).then(() => { console.info('Linux Succeess'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 })
 
 gulp.task('default', ['watch'])

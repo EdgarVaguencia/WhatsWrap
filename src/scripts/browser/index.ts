@@ -5,4 +5,4 @@ import {addPath} from 'app-module-path'
 
 addPath(mypath)
 
-require('webView')
+import './webView'
