@@ -1,8 +1,7 @@
-import {app, Menu, webContents} from 'electron'
+import {app} from 'electron'
 import mainWindow from './browserWindow'
 import ipcListener from './manager/ipcListener'
-const manifest = require('../package.json')
-const log = require('electron-log')
+import manifest from '../package.json'
 let browser:mainWindow = null
 
 const isOnlyBlock = app.requestSingleInstanceLock()
@@ -22,73 +21,18 @@ app.on('second-instance', () => {
 })
 
 app.on('ready', () => {
+  process.env['isDev'] = manifest.dev.toString()
+  process.env['webViewUrl'] = manifest.wvUrl
+  process.env['productName'] = manifest.wvUrl
+  process.env['version'] = manifest.version
+  process.env['wvUrl'] = manifest.wvUrl
+
   browser = new mainWindow()
   browser.initWebBrowser()
 
   new ipcListener(browser).listen()
-
-  createMenu(browser)
 })
 
 app.on('window-all-closed', () => {
   app.quit()
 })
-
-function getWebView() {
-  return webContents.getAllWebContents()
-    .filter(wc => wc.getURL().search('web.whatsapp.com') > -1)
-    .pop()
-}
-
-function createMenu(browserWindow): void {
-  const menuItmes = [
-    {
-      label: 'Mensages',
-      submenu: [
-        {
-          label: 'Saludandome',
-          click() {
-            const wc = getWebView()
-            if (wc){
-              wc.send('sos')
-            } else {
-              log.info('No se que paso')
-            }
-          }
-        },
-        {
-          label: 'Abrir archivo',
-          click() {
-            browserWindow.wb.webContents.send('uploadFile')
-          }
-        }
-      ],
-    },
-    {
-      label: 'Servicios',
-      submenu: [
-        {
-          label: 'Last-Fm',
-          submenu: [
-            {
-              label: 'Actualizar Status',
-              click() {
-                browserWindow.wb.webContents.send('statusUpdate')
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      label: 'Ayuda',
-      submenu: [
-        {
-          label: 'V ' + manifest.dev ? manifest.version + ' - dev': manifest.version
-        }
-      ]
-    }
-  ]
-
-  Menu.setApplicationMenu(Menu.buildFromTemplate(menuItmes))
-}

@@ -5,24 +5,19 @@
   "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
   "scripts": {
     "build": "tsc && gulp build",
-    "watch": "tsc -w & gulp",
-    "start": "yarn run build && yarn electron ./dist/"
+    "watch": "yarn gulp & yarn tsc -w",
+    "start": "yarn run build && yarn src/node_modules/.bin/electron ./dist/"
   },
   "devDependencies": {
-    "electron-packager": "^11.0.0",
-    "gulp": "^3.9.1",
-    "gulp-load-plugins": "^1.5.0",
+    "electron-packager": "11.2.1",
+    "gulp": "4.0.2",
+    "gulp-load-plugins": "2.0.1",
     "gulp-stylus": "^2.7.0",
-    "gulp-uglify": "^3.0.0",
-    "run-sequence": "^2.2.0",
-    "typescript": "^3.0.3"
+    "gulp-uglify": "3.0.2",
+    "typescript": "3.6.3"
   },
   "optionalDependencies": {
-    "electron-installer-debian": "^0.8.1",
     "electron-windows-installer": "^1.7.8"
   },
-  "dependencies": {
-    "electron": "3.0.0",
-    "global": "^4.3.2"
-  }
+  "dependencies": {}
 }

@@ -1,14 +1,13 @@
 import {ipcMain, shell, ipcRenderer} from 'electron'
+import mainWindow from '../browserWindow'
 
 export default class ipcListener {
 
-  browserWindow
+  browserWindow:mainWindow
 
   constructor(browserWindow) {
     this.browserWindow = browserWindow
   }
-
-
 
   listen() {
     /**
@@ -16,6 +15,7 @@ export default class ipcListener {
      */
     ipcMain.on('isConnected', (me:string) => {
       this.browserWindow.wb.webContents.send('initServices')
+      this.browserWindow.updateMenu()
     })
 
     /**

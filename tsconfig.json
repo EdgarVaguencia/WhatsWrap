@@ -3,7 +3,8 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/node_modules"
   ],
   "compilerOptions": {
     "target": "es5",
@@ -15,10 +16,9 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
-    "outDir": "dist/scripts",
-    "baseUrl": ".",
-    "paths": {
-      "@/": ["src/*"]
-    }
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": "src/"
   }
 }

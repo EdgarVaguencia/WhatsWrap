@@ -4,26 +4,24 @@
 
 * v0.3.4939 (Web)
 * [X] Icono dentro de la ventana windows-OS (Feature)
-* [ ] Respuesta a mensajes a partir de la notificación
 * Plugins
   * [ ] Poder ser agregar a manera de módulos
   * LastFM
     * [ ] Agregado de API-Key (modal)
     * [ ] Personalización del mensaje
-  * Campañas
-    * [ ] Envio de mensajes sin necesidad de tener agreagdo el contacto
-    * [ ] Dividir el archivo en bloques de 10 por minuto
+  * ~~Campañas~~
+    * ~~[ ] Envio de mensajes sin necesidad de tener agreagdo el contacto~~
+    * ~~[ ] Dividir el archivo en bloques de 10 por minuto~~
 * Bot
   * [ ] Google Calendar
   * ~~[ ] IFTTT~~
   * [ ] YouTube
-* [ ] Envio "masivo" de archvos multimedia
+* ~~[ ] Envio "masivo" de archvos multimedia~~
 * Estilo
   * [ ] Burbuja de mensajes transparente
-  * [ ] Estilo para estikers
 * [ ] La notificación nos lleve a la conversación
 * [ ] Marcar como visto un chat/msj desde la notificación
-* [ ] Responder mesaje desde notificación
+* ~~[ ] Responder mesaje desde notificación~~
 * [ ] Poder visualizar mensajes en modo incognito
 * [ ] Abrir mas de una cuenta
 * Dev
@@ -36,6 +34,7 @@
 ## 3.0.2
   * No se visualiza texto en chat con el tema obscuro (v0.3.4939)
   * Mejoras tema obscuro
+  * Estilo para estikers
 
 ## 3.0.0
 * Mejora tema obscuro
