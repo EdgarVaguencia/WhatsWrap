@@ -1,3 +1,10 @@
+/**
+ * ** OBSOLETO
+ * Esta función ya no es soportada debido a que no se
+ * permite el envio de mensajes de manera fácil o mediante
+ * la "API"
+ *
+ */
 import {remote} from 'electron'
 import csvParse = require('csv-to-array')
 import utils from '../../manager/utils'

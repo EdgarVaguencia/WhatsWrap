@@ -1,4 +1,4 @@
-import {ipcMain, shell, ipcRenderer} from 'electron'
+import {ipcMain, shell} from 'electron'
 import mainWindow from '../browserWindow'
 
 export default class ipcListener {

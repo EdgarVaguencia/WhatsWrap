@@ -2,41 +2,45 @@
 
 ## 0.3.3 - Dev
 
-* v0.3.4939 (Web)
+* v0.3.5149 (Web)
 * [X] Icono dentro de la ventana windows-OS (Feature)
 * Plugins
   * [ ] Poder ser agregar a manera de módulos
   * LastFM
     * [ ] Agregado de API-Key (modal)
     * [ ] Personalización del mensaje
-  * ~~Campañas~~
-    * ~~[ ] Envio de mensajes sin necesidad de tener agreagdo el contacto~~
-    * ~~[ ] Dividir el archivo en bloques de 10 por minuto~~
+  * Campañas
+    * [ ] Envio de mensajes sin necesidad de tener agreagdo el contacto
+    * [ ] Dividir el archivo en bloques de 10 por minuto
 * Bot
   * [ ] Google Calendar
   * ~~[ ] IFTTT~~
   * [ ] YouTube
-* ~~[ ] Envio "masivo" de archvos multimedia~~
+* [ ] Envio "masivo" de archvos multimedia
 * Estilo
   * [ ] Burbuja de mensajes transparente
 * [ ] La notificación nos lleve a la conversación
 * [ ] Marcar como visto un chat/msj desde la notificación
-* ~~[ ] Responder mesaje desde notificación~~
+* [ ] Responder mesaje desde notificación
 * [ ] Poder visualizar mensajes en modo incognito
 * [ ] Abrir mas de una cuenta
 * Dev
   * [ ] Lanzar notificacion a manera de test
 * Issues
-  * [ ] No se es posible crear nuevo chat (Detectado en V0.3.1648) esto usando un archivo CSV
 * Bug
   * [ ] Al mostrarse la notificación se pierde el foco de la ventana principal y no es posible continuar redactando
 
-## 3.0.2
+## 0.4.0
+  * [ X ] No se es posible crear nuevo chat (Detectado en V0.3.1648) esto usando un archivo CSV
+  * [ X ] No muestra Dark mode
+  * Nuevas variables públicas (Store, ChatMe, Status)
+
+## 0.3.2
   * No se visualiza texto en chat con el tema obscuro (v0.3.4939)
   * Mejoras tema obscuro
   * Estilo para estikers
 
-## 3.0.0
+## 0.3.0
 * Mejora tema obscuro
 * Requiere Chrome 49+
 

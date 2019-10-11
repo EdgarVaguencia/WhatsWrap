@@ -3,8 +3,7 @@
     "src/**/*"
   ],
   "exclude": [
-    "node_modules",
-    "src/node_modules"
+    "src/node_modules/**/*"
   ],
   "compilerOptions": {
     "target": "es5",

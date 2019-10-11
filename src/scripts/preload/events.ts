@@ -5,14 +5,14 @@ ipcRenderer.on('sos', () => {
   if (window['Store'].Chat.get(me) === undefined){
     window['Store'].Chat.add({cmd: 'action', id: me}, {merge: !0})
   }
-  window['Store'].Chat.get(me).sendMessage('Hola...')
+  window['ChatMe'].sendTextMsgToChat(window['Store'].Chat.get(me), 'Hola...')
 })
 
 ipcRenderer.on('updateStatus', (evt, data) => {
   var currentStatus = window['Store'].Status.get(`${getMe()}`).status
   if (data.txt !== currentStatus) {
-    window['Store'].Wap.sendSetStatus(data.txt)
-  }else {
+    window['Status'].setMyStatus(data.txt)
+  } else {
     log('No es posible actualizar status...')
   }
 })
@@ -25,7 +25,7 @@ ipcRenderer.on('changeStyle', (evt, data) => {
 function getMe(): string {
   let me:string = ""
   if (me.length === 0) {
-    me = window['Store'].Conn.me
+    me = window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized
   }
   return me
 }

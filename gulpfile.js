@@ -4,18 +4,20 @@ const packager = require('electron-packager')
 const manifest = require('./src/package.json')
 let winInstall, debInstall
 
-gulp.task('html', () => {
-  return gulp.src('src/html/*.html')
+function html (done) {
+  gulp.src('src/html/*.html')
     .pipe(gulp.dest('dist/html'))
-})
+  done()
+}
 
-gulp.task('stylus', () => {
-  return gulp.src('src/style/*.styl')
+function stylus (done) {
+  gulp.src('src/style/*.styl')
     .pipe(_$.stylus())
     .pipe(gulp.dest('dist/style'))
-})
+  done()
+}
 
-gulp.task('node', done => {
+function node (done) {
   gulp.src(
     [
       'src/node_modules/**/**/**/*',
@@ -26,28 +28,30 @@ gulp.task('node', done => {
   )
     .pipe(gulp.dest('dist/node_modules'))
   done()
-})
+}
 
-gulp.task('package', () => {
-  return gulp.src('src/package.json')
+function packages (done) {
+  gulp.src('src/package.json')
     .pipe(gulp.dest('dist'))
-})
-
-gulp.task('md', () => {
-  return gulp.src('src/*.md')
-    .pipe(gulp.dest('dist'))
-})
-
-gulp.task('build', gulp.parallel('html', 'stylus', 'package', 'node', 'md'))
-
-gulp.task('watch', gulp.series('build', done => {
-  gulp.watch('src/html/*.html', gulp.series('html'))
-  gulp.watch('src/style/*.styl', gulp.series('stylus'))
-  gulp.watch('src/package.json', gulp.parallel('package', 'node'))
   done()
-}))
+}
 
-gulp.task('pack:win32', gulp.series('build', done => {
+function md (done) {
+  gulp.src('src/*.md')
+    .pipe(gulp.dest('dist'))
+  done()
+}
+
+gulp.task('build', gulp.parallel(html, stylus, packages, node, md))
+
+function watch (done) {
+  gulp.watch('src/html/*.html', gulp.series(html))
+  gulp.watch('src/style/*.styl', gulp.series(stylus))
+  gulp.watch('src/package.json', gulp.parallel(packages, node))
+  done()
+}
+
+gulp.task('pack:win32', gulp.series('build', function interPackWin (done) {
   const isDev = manifest.dev ? '_dev' : ''
 
   return packager({
@@ -60,10 +64,10 @@ gulp.task('pack:win32', gulp.series('build', done => {
     packageManager: 'yarn',
     executableName: '' + manifest.productName + isDev,
     icon: './icons/win-icon.ico'
-  }).then((pathFiles) => console.info(`Create Pack: ${pathFiles[0]}`)).catch(err => { console.error(err, err.stack); process.exit(1) })
+  }).then((pathFiles) => { console.info(`Create Pack: ${pathFiles[0]}`); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-gulp.task('dist:win32', gulp.series('pack:win32', done => {
+gulp.task('dist:win32', gulp.series('pack:win32', function interDistWin (done) {
   if (process.platform !== 'win32') {
     return false
   }
@@ -83,7 +87,7 @@ gulp.task('dist:win32', gulp.series('pack:win32', done => {
   }).then(() => { console.info('Windows Success'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-gulp.task('pack:linux64', gulp.series('build', (done) => {
+gulp.task('pack:linux64', gulp.series('build', function interPackLin (done) {
   return packager({
     dir: './dist',
     arch: 'x64',
@@ -96,7 +100,7 @@ gulp.task('pack:linux64', gulp.series('build', (done) => {
   }).then((pathFiles) => { console.info(`Create Pack: ${pathFiles[0]}`); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-gulp.task('dist:linux64', gulp.series('pack:linux64', (done) => {
+gulp.task('dist:linux64', gulp.series('pack:linux64', function interDistLin (done) {
   if (process.platform !== 'linux') {
     return false
   }
@@ -117,4 +121,4 @@ gulp.task('dist:linux64', gulp.series('pack:linux64', (done) => {
   }).then(() => { console.info('Linux Succeess'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-gulp.task('default', gulp.series('watch'))
+exports.default = gulp.series(watch, 'build')

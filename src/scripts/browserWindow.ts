@@ -1,4 +1,5 @@
 import {BrowserWindow, webContents, Menu} from 'electron'
+import {log} from 'electron-log'
 
 export default class mainWindow {
 
@@ -13,6 +14,7 @@ export default class mainWindow {
     slashes: true,
     pathname: require('path').join(__dirname, '../html/index.html')
   })
+  private menu:Menu
   public wb:BrowserWindow
 
   initWebBrowser() {
@@ -45,28 +47,22 @@ export default class mainWindow {
   private createMenu(): void {
     let self = this
     const menuItmes = [
-      /*
-      * ** OBSOLETO
-      * Esta función ya no es soportada debido a que no se
-      * permite el envio de mensajes de manera fácil o mediante
-      * la "API"
-      */
-      // {
-      //   label: 'Mensages',
-      //   submenu: [
-      //     {
-      //       id: 'chatMe',
-      //       label: 'Saludandome',
-      //       enabled: false,
-      //       click() {
-      //         const wc = self.getWebView()
-      //         if (wc){
-      //           wc.send('sos')
-      //         } else {
-      //           log.info('No se que paso')
-      //         }
-      //       }
-      //     },
+      {
+        label: 'Mensages',
+        submenu: [
+          {
+            id: 'chatMe',
+            label: 'Saludandome',
+            enabled: false,
+            click() {
+              const wc = self.getWebView()
+              if (wc){
+                wc.send('sos')
+              } else {
+                log('No se que paso')
+              }
+            }
+          },
       //     {
       //       enabled: false,
       //       label: 'Abrir archivo',
@@ -74,8 +70,8 @@ export default class mainWindow {
       //         self.wb.webContents.send('uploadFile')
       //       }
       //     }
-      //   ],
-      // },
+        ],
+      },
       {
         label: 'Servicios',
         submenu: [
@@ -108,7 +104,8 @@ export default class mainWindow {
   }
 
   updateMenu():void {
-    let menu = Menu.getApplicationMenu()
-    menu.getMenuItemById('lastfm').enabled = true
+    this.menu = Menu.getApplicationMenu()
+    this.menu.getMenuItemById('lastfm').enabled = true
+    this.menu.getMenuItemById('chatMe').enabled = true
   }
 }

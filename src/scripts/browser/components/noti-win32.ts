@@ -1,5 +1,4 @@
 import {remote} from 'electron'
-const manifest = require('../../../package.json')
 
 export default class notificacion {
   private notifications
@@ -44,7 +43,7 @@ export default class notificacion {
 
     this.notifications[ide].loadURL(html)
 
-    if (manifest.dev) {
+    if (process.env['isDev'] === 'true') {
       this.notifications[ide].webContents.openDevTools()
     }
   }

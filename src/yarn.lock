@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@types/app-module-path@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/app-module-path/-/app-module-path-2.2.0.tgz#f4172141ad06df563902613af6dae8e0c1cb3b83"
+  integrity sha512-r47Kt3ApJDzUU2xCNzaBI25Au5Xfdvf0Gyomveqvg46nQ3J4PaDLicObhyX6cMhvMVWJMB/BnkXdv1E4zxP+6w==
+
 "@types/node@^8.0.24":
   version "8.10.29"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.29.tgz#b3a13b58dd7b0682bf1b42022bef4a5a9718f687"
@@ -233,9 +238,10 @@ electron-download@^4.1.0:
     semver "^5.4.1"
     sumchecker "^2.0.2"
 
-electron-log@^2.2.16:
-  version "2.2.17"
-  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-2.2.17.tgz#e71e2ebb949fc96ded7cdb99eeee7202e48981d2"
+electron-log@3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/electron-log/-/electron-log-3.0.8.tgz#ea672dc40b560143ed5d887eff1ff1904fe9ef71"
+  integrity sha512-B9+eJ8z3UbDnWEz+G33SIJvEDeKLznHEV4sCu6bR31KuOdp3dYN046QBWbLNsvKU+lzFI6eOi+xNCpNHZvatiw==
 
 electron@3.0.0:
   version "3.0.0"
