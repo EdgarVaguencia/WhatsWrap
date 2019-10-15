@@ -30,6 +30,10 @@
 * Bug
   * [ ] Al mostrarse la notificación se pierde el foco de la ventana principal y no es posible continuar redactando
 
+## 0.4.1
+  * Titulo de ventana mostraba url
+  * Corrección al detectar los módulos
+
 ## 0.4.0
   * [ X ] No se es posible crear nuevo chat (Detectado en V0.3.1648) esto usando un archivo CSV
   * [ X ] No muestra Dark mode

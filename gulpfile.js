@@ -121,4 +121,4 @@ gulp.task('dist:linux64', gulp.series('pack:linux64', function interDistLin (don
   }).then(() => { console.info('Linux Succeess'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-exports.default = gulp.series(watch, 'build')
+exports.default = gulp.series(watch)

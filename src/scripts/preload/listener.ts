@@ -2,7 +2,7 @@ import {ipcRenderer} from 'electron'
 
 var modules : any
 const timerId = setInterval(() => {
-  if (window['Debug']) {
+  if (window.localStorage.WABrowserId) {
     clearInterval(timerId)
     getModules()
   }
@@ -25,26 +25,24 @@ function isReady(): void {
   //     }
   //   }
   // }
-  if (modules['bhggeigghg'] && modules['dbbhhgjjbg'] && modules['bijjheifie']) {
-    // console.info(modules['bhggeigghg'])
-    // console.info(modules['dbbhhgjjbg'])
-    // console.info(modules['bijjheifie'])
-    if (modules['bhggeigghg'].exports.default.Chat) {
-      window['Store'] = requireId(modules['bhggeigghg'].i.replace(/"/g, '"')).default
-    }
-    if (modules['dbbhhgjjbg'].exports.sendTextMsgToChat) {
-      window['ChatMe'] = requireId(modules['dbbhhgjjbg'].i.replace(/"/g, '"'))
-    }
-    if (modules['bijjheifie'].exports.setMyStatus) {
-      window['Status'] = requireId(modules['bijjheifie'].i.replace(/"/g, '"'))
-    }
-    const timeModules = setInterval(() => {
-      if (window['Store']) {
-        clearInterval(timeModules)
-        ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+  const timeModules = setInterval(() => {
+    if (modules['bhggeigghg'] && modules['dbbhhgjjbg'] && modules['cbcjhabjci']) {
+      // console.info(modules['bhggeigghg']) // Store
+      // console.info(modules['dbbhhgjjbg']) // ChatMe
+      // console.info(modules['cbcjhabjci']) // Status
+      if (modules['bhggeigghg'].exports.default.Chat) {
+        window['Store'] = requireId(modules['bhggeigghg'].i.replace(/"/g, '"')).default
       }
-    }, 3000)
-  }
+      if (modules['dbbhhgjjbg'].exports.sendTextMsgToChat) {
+        window['ChatMe'] = requireId(modules['dbbhhgjjbg'].i.replace(/"/g, '"'))
+      }
+      if (modules['cbcjhabjci'].exports.setMyStatus) {
+        window['Status'] = requireId(modules['cbcjhabjci'].i.replace(/"/g, '"'))
+      }
+      clearInterval(timeModules)
+      ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+    }
+  }, 3000)
 }
 
 function requireId(id) {
