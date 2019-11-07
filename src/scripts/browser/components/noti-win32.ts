@@ -5,6 +5,7 @@ export default class notificacion {
 
   constructor() {
     this.notifications = {}
+    this.fireNotification({title:'¡Bienvenido a WhatsWrap!', body:'Estamos en línea.'})
   }
 
   fireNotification(opts) {
@@ -18,7 +19,8 @@ export default class notificacion {
       resizable: true,
       alwaysOnTop: true,
       webPreferences: {
-        webSecurity: false
+        webSecurity: false,
+        nodeIntegration: true
       },
       useContentSize: true
     })

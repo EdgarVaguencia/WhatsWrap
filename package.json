@@ -4,22 +4,22 @@
   "license": "MIT",
   "author": "Edgar Vaguencia <isc.edgarvalencia@gmail.com>",
   "scripts": {
-    "watch": "yarn run tsc -w | yarn run gulp",
-    "start": "yarn run build && ./src/node_modules/.bin/electron ./dist/",
-    "build": "yarn tsc && gulp build",
-    "dist:win": "yarn tsc && yarn gulp dist:win32",
-    "dist:lin": "yarn tsc && yarn gulp dist:linux64"
+    "watch": "yarn gulp",
+    "start": "yarn gulp starDev",
+    "dist:win": "yarn gulp dist:win32",
+    "dist:lin": "yarn gulp dist:linux64"
   },
   "devDependencies": {
-    "@types/node": "12.7.12",
-    "electron-packager": "12.2.0",
+    "@types/node": "12.12.0",
+    "electron-packager": "14.1.0",
     "gulp": "4.0.2",
     "gulp-load-plugins": "2.0.1",
     "gulp-stylus": "2.7.0",
     "gulp-uglify": "3.0.2",
-    "typescript": "3.6.3"
+    "typescript": "3.7.2"
   },
   "optionalDependencies": {
+    "electron-installer-debian": "^0.8.1",
     "electron-windows-installer": "^1.7.8"
   },
   "dependencies": {}

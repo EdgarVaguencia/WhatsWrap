@@ -44,7 +44,7 @@ export default class utils {
   /**
    * @param txt Mensaje con emoji
    */
-  parseMsg(txt: string): string {
+  parseMsg(txt:string): string {
     var emojis = txt.match(this.expRegEmoji)
 
     if (emojis) {
@@ -58,14 +58,23 @@ export default class utils {
   /**
    * @param data Objeto de datos que contiene le teléfono y mensaje a enviar
    */
-  sendMenssage(data: any): void {
+  sendMenssage(data:any): void {
     this.getWebView()
     this.wv.send('sendMessage', data)
   }
 
-  updateTheme(pathFile) {
+  updateTheme(pathFile?:string) {
     this.getWebView()
-    this.wv.send('changeStyle', fs.readFileSync(pathFile, 'utf-8'))
+    let readFile:string
+    if (pathFile) {
+      try {
+        readFile = fs.readFileSync(pathFile, 'utf-8')
+      }
+      catch {
+        readFile = ''
+      }
+    }
+    this.wv.send('changeStyle', readFile)
   }
 
 }

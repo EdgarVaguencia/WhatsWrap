@@ -1,11 +1,11 @@
 # Change Log
 
-## 0.3.3 - Dev
+## 0.4.3 - Dev
 
-* v0.3.5149 (Web)
+* v0.3.5374 (Web)
 * [X] Icono dentro de la ventana windows-OS (Feature)
 * Plugins
-  * [ ] Poder ser agregar a manera de módulos
+  * [ ] Poder ser agregado a manera de módulos
   * LastFM
     * [ ] Agregado de API-Key (modal)
     * [ ] Personalización del mensaje
@@ -26,9 +26,15 @@
 * [ ] Abrir mas de una cuenta
 * Dev
   * [ ] Lanzar notificacion a manera de test
-* Issues
 * Bug
   * [ ] Al mostrarse la notificación se pierde el foco de la ventana principal y no es posible continuar redactando
+
+## 0.5.0
+  * Update Electron@6.0.0
+  * Cambio de estilo (original, dark)
+
+## 0.4.2
+  * Mejora en la generación/actualización del menú
 
 ## 0.4.1
   * Titulo de ventana mostraba url

@@ -11,32 +11,39 @@ interface lf {
 
 export default class LastFm extends util {
   private options = {
-    user: 'EdgarKmarita',
+    user: '',
     apiKey: '',
     delay: 1000 * 60 * 3, // 3 mins
     url: 'http://ws.audioscrobbler.com/2.0/?limit=1&format=json&method=user.getrecenttracks&user='
   }
-  // private utils: util
+  private intervalStatus
   isConnected: boolean = false
 
-  // constructor() {this.utils = new util() }
+  constructor() {
+    super()
+    this.init()
+  }
 
-  init() {
+  private init() {
     this.log('init LastFm...')
-    setInterval(() => {
+    this.intervalStatus = setInterval(() => {
       this.updStatus()
     }, this.options.delay)
     this.updStatus()
-    this.isConnected = true
   }
 
   updStatus() {
-    this.getCurrentScrobbling().then((d:lf) => {
-      this.updateStatus(`${this.getEmoji('headphone')} ${d.name} By ${d.artist['#text']}`)
-    })
+    if (this.options.apiKey.length > 0) {
+      this.isConnected = true
+      this.getCurrentScrobbling().then((d: lf) => {
+        this.updateStatus(`${this.getEmoji('headphone')} ${d.name} By ${d.artist['#text']}`)
+      })
+    } else {
+      this.isConnected = false
+    }
   }
 
-  async getCurrentScrobbling() {
+  private async getCurrentScrobbling() {
     this.log('getCurrentScrobbling...')
     return await new Promise((resolve, reject) => {
       var url = `${this.options.url}${this.options.user}&api_key=${this.options.apiKey}`
@@ -50,7 +57,15 @@ export default class LastFm extends util {
           this.isConnected = false
           reject(resp.statusCode)
         }
+        if (err) {
+          ipcRenderer.send('newMessage', {tag: 'LastFm', body: err})
+          reject()
+        }
       })
     })
+  }
+
+  stopUpdate() {
+    clearInterval(this.intervalStatus)
   }
 }

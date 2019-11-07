@@ -6,7 +6,7 @@
  *
  */
 import {remote} from 'electron'
-import csvParse = require('csv-to-array')
+const csvParse = require('csv-to-array')
 import utils from '../../manager/utils'
 
 class data {

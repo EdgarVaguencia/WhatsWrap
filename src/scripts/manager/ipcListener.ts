@@ -13,22 +13,21 @@ export default class ipcListener {
     /**
      * WhatsApp esta cargado completamente
      */
-    ipcMain.on('isConnected', (me:string) => {
+    ipcMain.on('isConnected', (e:Event, me:string) => {
       this.browserWindow.wb.webContents.send('initServices')
-      this.browserWindow.updateMenu()
     })
 
     /**
      * Se recibe Mensaje
      */
-    ipcMain.on('newMessage', (event:string, opts: Object) => {
+    ipcMain.on('newMessage', (event:Event, opts: Object) => {
       this.browserWindow.wb.webContents.send('fireNotification', opts)
     })
 
     /**
      * Se abre URL
      */
-    ipcMain.on('open-url', (e:string, url: string, opts?: Object) => {
+    ipcMain.on('open-url', (e:Event, url: string, opts?: Object) => {
       shell.openExternal(url)
     })
   }

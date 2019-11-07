@@ -39,8 +39,10 @@ function isReady(): void {
       if (modules['cbcjhabjci'].exports.setMyStatus) {
         window['Status'] = requireId(modules['cbcjhabjci'].i.replace(/"/g, '"'))
       }
-      clearInterval(timeModules)
-      ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+      if(window['Store'].Contact.models.length > 0) {
+        clearInterval(timeModules)
+        ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+      }
     }
   }, 3000)
 }

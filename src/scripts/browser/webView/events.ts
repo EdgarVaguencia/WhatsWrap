@@ -1,5 +1,5 @@
 
-import {ipcRenderer} from 'electron'
+import {ipcRenderer, remote} from 'electron'
 import {notificacion} from '../components'
 import {lastFm, theme} from '../services'
 import {default as sys} from '../../tools/platform'
@@ -7,21 +7,20 @@ import {default as sys} from '../../tools/platform'
 let lf:lastFm, not, th:theme
 // fu:fileUpload,
 
-/*
-  Iniciamos los servicios
-*/
+/**
+ * Iniciamos los servicios
+ */
 ipcRenderer.on('initServices', () => {
+  let menu = remote.require('./menu').default
+  menu.updateMenu()
   not = new notificacion()
   lf = new lastFm()
-  lf.init()
-  // fu = new fileUpload()
-  th = new theme()
-  th.customCss()
+  th = new theme({style: 'dark'})
 })
 
-/*
-  "Forzamos" la actualización del Status
-*/
+/**
+ * "Forzamos" la actualización del Status
+ */
 ipcRenderer.on('statusUpdate', () => {
   if (lf && lf.isConnected) {
     lf.updStatus()
@@ -35,6 +34,13 @@ ipcRenderer.on('fireNotification', (event, opts) => {
   if (!sys.isLinux) {
     not.fireNotification(opts)
   }
+})
+
+/**
+ * Cambia el tema
+ */
+ipcRenderer.on('updateTheme', (event, opts) => {
+  th.changeTheme(opts.theme)
 })
 
 /**

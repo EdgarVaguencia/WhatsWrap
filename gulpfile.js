@@ -2,6 +2,7 @@ const gulp = require('gulp')
 const _$ = require('gulp-load-plugins')()
 const packager = require('electron-packager')
 const manifest = require('./src/package.json')
+const cp = require('child_process')
 let winInstall, debInstall
 
 function html (done) {
@@ -42,14 +43,33 @@ function md (done) {
   done()
 }
 
-gulp.task('build', gulp.parallel(html, stylus, packages, node, md))
-
 function watch (done) {
-  gulp.watch('src/html/*.html', gulp.series(html))
-  gulp.watch('src/style/*.styl', gulp.series(stylus))
-  gulp.watch('src/package.json', gulp.parallel(packages, node))
+  gulp.watch('src/html/*.html', { ignoreInitial: false }, gulp.series(html))
+  gulp.watch('src/style/*.styl', { ignoreInitial: false }, gulp.series(stylus))
+  gulp.watch('src/package.json', { ignoreInitial: false }, gulp.parallel(packages, node))
+  gulp.watch('src/scripts/**/*.ts', { ignoreInitial: false }, gulp.series(tsFiles))
   done()
 }
+
+function tsFiles (done) {
+  const args = []
+  let cmd = 'tsc'
+
+  if (process.platform === 'win32') {
+    cmd += '.cmd'
+  }
+
+  const ts = cp.spawnSync(cmd, args)
+  let str = ts.stdout.toString()
+
+  if (str.indexOf('error')) {
+    console.error(str)
+  }
+
+  done()
+}
+
+gulp.task('build', gulp.parallel(html, stylus, packages, node, md, tsFiles))
 
 gulp.task('pack:win32', gulp.series('build', function interPackWin (done) {
   const isDev = manifest.dev ? '_dev' : ''
@@ -119,6 +139,26 @@ gulp.task('dist:linux64', gulp.series('pack:linux64', function interDistLin (don
     mimeType: ['text/plain'],
     homepage: 'https://github.com/EdgarVaguencia/WhatsWrap'
   }).then(() => { console.info('Linux Succeess'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
+}))
+
+gulp.task('starDev', gulp.series(done => {
+  let args = ['./dist']
+  let cmd = './src/node_modules/.bin/electron'
+
+  if (process.platform === 'win32') {
+    cmd = '.\\src\\node_modules\\.bin\\electron.cmd'
+  }
+
+  const elec = cp.spawn(cmd, args)
+  elec.stdout.on('data', d => {
+    let str = String(d)
+    console.log(str)
+  })
+  elec.stderr.on('data', e => {
+    let str = String(e)
+    console.log(str)
+  })
+  elec.on('close', () => { done() })
 }))
 
 exports.default = gulp.series(watch)
