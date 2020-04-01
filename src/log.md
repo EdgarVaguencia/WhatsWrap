@@ -1,8 +1,8 @@
 # Change Log
 
-## 0.4.3 - Dev
+## 0.5.2 - Dev
 
-* v0.3.5374 (Web)
+* v0.4.2088‬ (Web)
 * [X] Icono dentro de la ventana windows-OS (Feature)
 * Plugins
   * [ ] Poder ser agregado a manera de módulos
@@ -27,7 +27,13 @@
 * Dev
   * [ ] Lanzar notificacion a manera de test
 * Bug
-  * [ ] Al mostrarse la notificación se pierde el foco de la ventana principal y no es posible continuar redactando
+  * ~~[ ] Al mostrarse la notificación se pierde el foco de la ventana principal y no es posible continuar redactando~~ Se teiene habiliatdo ``alwaysOnTop``
+  * [ ] El input de mensaje mantiene un color gris poco visible
+  * [ ] No concuerda el estilo obcuro al hacer click en multimedia
+  * [ ] No aplica darkmode
+
+## 0.5.1
+  * Cambio en la obtencion de funcion por cambio de webpackJsonp
 
 ## 0.5.0
   * Update Electron@6.0.0

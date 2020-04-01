@@ -1,4 +1,4 @@
-import { Menu, webContents, BrowserWindow } from "electron";
+import { Menu, webContents, BrowserWindow } from 'electron'
 
 
 function createMenu(browser:BrowserWindow) {
@@ -40,7 +40,6 @@ function createMenu(browser:BrowserWindow) {
               label: 'Actualizar Status',
               click() {
                 browser.webContents.send('statusUpdate')
-                // self.wb.webContents.send('statusUpdate')
               }
             }
           ]

@@ -11,8 +11,8 @@ interface lf {
 
 export default class LastFm extends util {
   private options = {
-    user: '',
-    apiKey: '',
+    user: 'EdgarKmarita',
+    apiKey: 'ebb288a9fba45278c0b326b7766f8911',
     delay: 1000 * 60 * 3, // 3 mins
     url: 'http://ws.audioscrobbler.com/2.0/?limit=1&format=json&method=user.getrecenttracks&user='
   }
@@ -21,15 +21,17 @@ export default class LastFm extends util {
 
   constructor() {
     super()
+    this.log('init LastFm...')
     this.init()
   }
 
   private init() {
-    this.log('init LastFm...')
     this.intervalStatus = setInterval(() => {
       this.updStatus()
     }, this.options.delay)
     this.updStatus()
+    // this.updStatus()
+    // setTimeout(this.updStatus, this.options.delay)
   }
 
   updStatus() {

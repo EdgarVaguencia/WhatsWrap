@@ -1,7 +1,7 @@
 import {remote} from 'electron'
 
 export default class notificacion {
-  private notifications
+  private notifications:Object
 
   constructor() {
     this.notifications = {}
@@ -45,8 +45,8 @@ export default class notificacion {
 
     this.notifications[ide].loadURL(html)
 
-    if (process.env['isDev'] === 'true') {
-      this.notifications[ide].webContents.openDevTools()
-    }
+    // if (process.env['isDev'] === 'true') {
+    //   this.notifications[ide].webContents.openDevTools()
+    // }
   }
 }

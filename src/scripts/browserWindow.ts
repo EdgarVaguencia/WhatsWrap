@@ -7,6 +7,7 @@ export default class mainWindow {
     minHeight: 355,
     title: process.env['productName'],
     icon: require('path').join(__dirname, '../icons/win-icon.png'),
+    titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
       webviewTag: true
