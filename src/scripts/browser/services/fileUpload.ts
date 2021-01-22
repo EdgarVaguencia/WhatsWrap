@@ -16,13 +16,13 @@ class data {
 
 export default class fileUpload extends utils{
   openFile() {
-    remote.dialog.showOpenDialog({
+    remote.dialog.showOpenDialog(null, {
       title: 'Selecciona un archivo',
       properties: ['openFile'],
       filters: [{name: 'CSV', extensions: ['csv']}]
-    },
-    (files) => {
-      if (files && files.length > 0){
+    })
+    .then(files => {
+      if (files.filePaths){
         csvParse({
           file: files[0],
           columns: ['telefono', 'mensaje']

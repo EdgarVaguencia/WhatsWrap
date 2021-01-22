@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron'
+import modulos from './modules'
 
-var modules : any[]
 const timerId = setInterval(() => {
   if (window.localStorage.WABrowserId) {
     clearInterval(timerId)
@@ -8,31 +8,35 @@ const timerId = setInterval(() => {
   }
 }, 5000)
 
-function isReady(): void {
-  const timeModules = setInterval(() => {
-    if (modules['bhggeigghg'] && modules['dbbhhgjjbg'] && modules['cbcjhabjci']) {
-      // console.info(modules['bhggeigghg']) // Store
-      // console.info(modules['dbbhhgjjbg']) // ChatMe
-      // console.info(modules['cbcjhabjci']) // Status
-      // console.info(modules['bjigbaghc']) // Conn
-      if (modules['bhggeigghg'].exports.default.Chat) {
-        window['Store'] = modules['bhggeigghg'].exports.default
-      }
-      if (modules['dbbhhgjjbg'].exports.sendTextMsgToChat) {
-        window['ChatMe'] = modules['dbbhhgjjbg'].exports
-      }
-      if (modules['cbcjhabjci'].exports.setMyStatus) {
-        window['Status'] = modules['cbcjhabjci'].exports
-      }
-      if (modules['bjigbaghc'].exports.Conn) {
-        window['Conn'] = modules['bjigbaghc'].exports.default
-      }
-      if(window['Store'].Contact.models.length > 0) {
-        clearInterval(timeModules)
-        ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+function isReady(modulesWebPack): void {
+  let moduleFound:number = 0
+  let allModules = setInterval(() => {
+    // console.info(moduleFound)
+    for (let idMod in modulesWebPack) {
+      if (modulesWebPack[idMod].exports) {
+        modulos.forEach(needModule => {
+          if (needModule.module) return
+          let exposeModule = needModule.exists(modulesWebPack[idMod].exports)
+          if (exposeModule !== null) {
+            moduleFound ++
+            needModule.module = exposeModule
+          }
+        })
+        if (moduleFound === modulos.length) {
+          console.info('Todo encontrado')
+          let storeModule = modulos.find(m => m.id === 'Store')
+          window['Store'] = storeModule.module ? storeModule.module : {}
+          modulos.splice(modulos.indexOf(storeModule), 1)
+          modulos.forEach(mod => {
+            window['Store'][mod.id] = mod.module
+          })
+          ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+          clearInterval(allModules)
+          break
+        }
       }
     }
-  }, 3000)
+  }, 2000)
 }
 
 function requireId(id) {
@@ -43,18 +47,12 @@ function getModules(): void {
   if (typeof window['webpackJsonp'] === 'function') {
     window['webpackJsonp']([],
       {
-        [123]: function(module, exports, __webpack_require__) {
-          modules = __webpack_require__.c
-          isReady()
-        }
+        [123]: (module, exports, __webpack_require__) => isReady(__webpack_require__.c)
       }, [123])
   } else {
     window['webpackJsonp'].push([
       [123], {
-        123: function(module, exports, __webpack_require__) {
-          modules = __webpack_require__.c
-          isReady()
-        }
+        123: (module, exports, __webpack_require__) => isReady(__webpack_require__.c)
       }, [[123]]
     ])
   }
@@ -62,7 +60,7 @@ function getModules(): void {
 
 window.addEventListener('load', async () => {
   const title = document.querySelector('.version-title')
-  if (title && title.innerHTML.includes('Google Chrome 49+')) {
+  if (title && title.innerHTML.includes('Google Chrome 60+')) {
     window.location.reload()
   }
 })

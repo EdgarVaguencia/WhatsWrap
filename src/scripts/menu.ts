@@ -46,27 +46,27 @@ function createMenu(browser:BrowserWindow) {
         }
       ]
     },
-    {
-      label: 'Estilo',
-      submenu: [
-        {
-          id: 'darkTheme',
-          label: 'Obscuro',
-          enabled: false,
-          click() {
-            browser.webContents.send('updateTheme', {theme: 'dark'})
-          }
-        },
-        {
-          id: 'lightTheme',
-          label: 'Original',
-          enabled: false,
-          click() {
-            browser.webContents.send('updateTheme', {theme: 'light'})
-          }
-        }
-      ]
-    },
+    // {
+    //   label: 'Estilo',
+    //   submenu: [
+    //     {
+    //       id: 'darkTheme',
+    //       label: 'Obscuro',
+    //       enabled: false,
+    //       click() {
+    //         browser.webContents.send('updateTheme', {theme: 'dark'})
+    //       }
+    //     },
+    //     {
+    //       id: 'lightTheme',
+    //       label: 'Original',
+    //       enabled: false,
+    //       click() {
+    //         browser.webContents.send('updateTheme', {theme: 'light'})
+    //       }
+    //     }
+    //   ]
+    // },
     {
       label: 'Ayuda',
       submenu: [
@@ -96,8 +96,8 @@ function updateMenu() {
   let menu = Menu.getApplicationMenu()
   menu.getMenuItemById('lastfm').enabled = true
   menu.getMenuItemById('chatMe').enabled = true
-  menu.getMenuItemById('lightTheme').enabled = true
-  menu.getMenuItemById('darkTheme').enabled = true
+  // menu.getMenuItemById('lightTheme').enabled = true
+  // menu.getMenuItemById('darkTheme').enabled = true
 }
 
 function getVersion(): string {

@@ -1,4 +1,4 @@
-import {BrowserWindow} from 'electron'
+import { BrowserWindow, nativeTheme } from 'electron'
 
 export default class mainWindow {
 

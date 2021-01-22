@@ -1,10 +1,11 @@
 
 import {ipcRenderer, remote} from 'electron'
 import {notificacion} from '../components'
-import {lastFm, theme} from '../services'
+import {lastFm} from '../services'
 import {default as sys} from '../../tools/platform'
 
-let lf:lastFm, not, th:theme
+let lf:lastFm, not
+// , th:theme
 // fu:fileUpload,
 
 /**
@@ -15,7 +16,7 @@ ipcRenderer.on('initServices', () => {
   menu.updateMenu()
   not = new notificacion()
   lf = new lastFm()
-  th = new theme({style: 'dark'})
+  // th = new theme({style: 'dark'})
 })
 
 /**
@@ -39,9 +40,9 @@ ipcRenderer.on('fireNotification', (event, opts) => {
 /**
  * Cambia el tema
  */
-ipcRenderer.on('updateTheme', (event, opts) => {
-  th.changeTheme(opts.theme)
-})
+// ipcRenderer.on('updateTheme', (event, opts) => {
+//   th.changeTheme(opts.theme)
+// })
 
 /**
  * ** OBSOLETO
