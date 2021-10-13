@@ -3,7 +3,7 @@ const _$ = require('gulp-load-plugins')()
 const packager = require('electron-packager')
 const manifest = require('./src/package.json')
 const cp = require('child_process')
-let winInstall, debInstall
+let debInstall, electronInstaller
 
 function html (done) {
   gulp.src('src/html/*.html')
@@ -87,24 +87,28 @@ gulp.task('pack:win32', gulp.series('build', function interPackWin (done) {
   }).then((pathFiles) => { console.info(`Create Pack: ${pathFiles[0]}`); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-gulp.task('dist:win32', gulp.series('pack:win32', function interDistWin (done) {
+gulp.task('dist:win32', gulp.series('pack:win32', async function interDistWin (done) {
   if (process.platform !== 'win32') {
     return false
   }
 
-  winInstall = require('electron-windows-installer')
+  electronInstaller = require('electron-winstaller')
   const isDev = manifest.dev ? '_dev' : ''
 
-  winInstall({
+  // winInstall
+  await electronInstaller.createWindowsInstaller({
     appDirectory: './build/' + manifest.productName + '-win32-x64',
     outputDirectory: './build',
     authors: 'Edgar Vaguencia',
     noMsi: true,
     exe: manifest.productName + isDev + '.exe',
     setupExe: 'win32-x64-' + manifest.productName + '-' + manifest.version + isDev + '.exe',
-    iconUrl: 'https://raw.githubusercontent.com/EdgarVaguencia/WhatsWrap/master/icons/win-icon.ico',
-    arch: 'ia32'
-  }).then(() => { console.info('Windows Success'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
+    iconUrl: 'https://raw.githubusercontent.com/EdgarVaguencia/WhatsWrap/master/icons/win-icon.ico'
+    // arch: 'ia32'
+  })
+  // .then(() => { console.info('Windows Success'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
+  console.info('Windows Success')
+  done()
 }))
 
 gulp.task('pack:linux64', gulp.series('build', function interPackLin (done) {
@@ -141,7 +145,7 @@ gulp.task('dist:linux64', gulp.series('pack:linux64', function interDistLin (don
   }).then(() => { console.info('Linux Succeess'); done() }).catch(err => { console.error(err, err.stack); process.exit(1) })
 }))
 
-gulp.task('starDev', gulp.series(done => {
+gulp.task('starDev', gulp.series('build', done => {
   let args = ['./dist']
   let cmd = './src/node_modules/.bin/electron'
 

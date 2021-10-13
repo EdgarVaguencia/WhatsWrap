@@ -84,6 +84,12 @@ function createMenu(browser:BrowserWindow) {
         {
           label: 'Recargar',
           role: 'forceReload'
+        },
+        {
+          label: 'Conectar',
+          click() {
+            browser.webContents.send('initServices')
+          }
         }
       ]
     })

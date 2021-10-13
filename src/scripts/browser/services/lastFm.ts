@@ -11,8 +11,8 @@ interface lf {
 
 export default class LastFm extends util {
   private options = {
-    user: 'EdgarKmarita',
-    apiKey: 'ebb288a9fba45278c0b326b7766f8911',
+    user: '',
+    apiKey: '',
     delay: 1000 * 60 * 3, // 3 mins
     url: 'http://ws.audioscrobbler.com/2.0/?limit=1&format=json&method=user.getrecenttracks&user='
   }

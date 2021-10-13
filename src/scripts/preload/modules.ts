@@ -14,7 +14,7 @@ const modulos:moduloType[] = [
   {
     id: 'Conn',
     exists: module => {
-      return module.default && module.default.ref ? module.default : null
+      return module.default && module.default.platform ? module.default : null
     }
   },
   {

@@ -2,7 +2,7 @@ import {ipcRenderer} from 'electron'
 import modulos from './modules'
 
 const timerId = setInterval(() => {
-  if (window.localStorage.WABrowserId) {
+  if (window.localStorage['last-wid-md'] || window.localStorage['last-wid']) {
     clearInterval(timerId)
     getModules()
   }
@@ -11,12 +11,11 @@ const timerId = setInterval(() => {
 function isReady(modulesWebPack): void {
   let moduleFound:number = 0
   let allModules = setInterval(() => {
-    // console.info(moduleFound)
     for (let idMod in modulesWebPack) {
-      if (modulesWebPack[idMod].exports) {
+      if (typeof modulesWebPack[idMod] === 'object') {
         modulos.forEach(needModule => {
           if (needModule.module) return
-          let exposeModule = needModule.exists(modulesWebPack[idMod].exports)
+          let exposeModule = needModule.exists(modulesWebPack[idMod])
           if (exposeModule !== null) {
             moduleFound ++
             needModule.module = exposeModule
@@ -30,7 +29,7 @@ function isReady(modulesWebPack): void {
           modulos.forEach(mod => {
             window['Store'][mod.id] = mod.module
           })
-          ipcRenderer.send('isConnected', window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
+          ipcRenderer.send('isConnected') //, window['Store'].Contact.models.filter(c => { return c.isMe })[0].id._serialized)
           clearInterval(allModules)
           break
         }
@@ -44,16 +43,26 @@ function requireId(id) {
 }
 
 function getModules(): void {
-  if (typeof window['webpackJsonp'] === 'function') {
-    window['webpackJsonp']([],
+  let jsonModules = 'webpackChunkwhatsapp_web_client'
+
+  if (typeof window[jsonModules] === 'function') {
+    window[jsonModules]([],
       {
         [123]: (module, exports, __webpack_require__) => isReady(__webpack_require__.c)
       }, [123])
   } else {
-    window['webpackJsonp'].push([
-      [123], {
-        123: (module, exports, __webpack_require__) => isReady(__webpack_require__.c)
-      }, [[123]]
+    window[jsonModules].push([
+      [123],
+      {
+        123: (module, exports, __webpack_require__) => {
+          let modules = []
+          for (let ind in __webpack_require__.m) {
+            modules.push(__webpack_require__(ind))
+          }
+          isReady(modules)
+        }
+      },
+      e => { e(e.s=123) }
     ])
   }
 }

@@ -11,16 +11,17 @@
   },
   "devDependencies": {
     "@types/node": "12.12.0",
-    "electron-packager": "14.1.0",
+    "electron-packager": "15.4.0",
     "gulp": "4.0.2",
-    "gulp-load-plugins": "2.0.1",
+    "gulp-load-plugins": "2.0.7",
     "gulp-stylus": "2.7.0",
     "gulp-uglify": "3.0.2",
-    "typescript": "3.7.2"
+    "ts-standard": "10.0.0",
+    "typescript": "3.8.2"
   },
   "optionalDependencies": {
     "electron-installer-debian": "^0.8.1",
-    "electron-windows-installer": "^1.7.8"
+    "electron-winstaller": "^5.0.0"
   },
   "dependencies": {}
 }

@@ -1,12 +1,12 @@
 function getMe():string {
   let user:string = ''
-  user = window['Store'].Contact.models.filter(c => c.isMe)[0].id._serialized
+  user = window['Store'].Contact.models.filter(c => c.isMe)[0]
   return user
 }
 
-async function getStatus(userId:string):Promise<string> {
-  let statusUser = await window['Store'].Status.getStatus(userId)
-  return statusUser.status
+async function getStatus(user:any):Promise<string> {
+  let statusUser = user.getStatus().status
+  return statusUser
 }
 
 function getChat(userId:string) {

@@ -1,11 +1,10 @@
-import {ipcMain, shell} from 'electron'
-import mainWindow from '../browserWindow'
+import {ipcMain, shell, BrowserWindow} from 'electron'
 
 export default class ipcListener {
 
-  browserWindow:mainWindow
+  private browserWindow:BrowserWindow
 
-  constructor(browserWindow) {
+  constructor(browserWindow: BrowserWindow) {
     this.browserWindow = browserWindow
   }
 
@@ -13,15 +12,15 @@ export default class ipcListener {
     /**
      * WhatsApp esta cargado completamente
      */
-    ipcMain.on('isConnected', (e:Event, me:string) => {
-      this.browserWindow.wb.webContents.send('initServices')
+    ipcMain.on('isConnected', (e:Event) => {
+      this.browserWindow.webContents.send('initServices')
     })
 
     /**
      * Se recibe Mensaje
      */
     ipcMain.on('newMessage', (event:Event, opts: Object) => {
-      this.browserWindow.wb.webContents.send('fireNotification', opts)
+      this.browserWindow.webContents.send('fireNotification', opts)
     })
 
     /**

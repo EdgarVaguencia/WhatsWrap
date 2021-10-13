@@ -25,7 +25,7 @@ app.on('second-instance', () => {
 app.on('ready', () => {
   process.env['isDev'] = `${manifest.dev}`
   process.env['webViewUrl'] = manifest.wvUrl
-  process.env['productName'] = manifest.wvUrl
+  process.env['productName'] = manifest.productName
   process.env['version'] = manifest.version
   process.env['wvUrl'] = manifest.wvUrl
 
@@ -34,7 +34,7 @@ app.on('ready', () => {
 
   menus.createMenu(browser.wb)
 
-  new ipcListener(browser).listen()
+  new ipcListener(browser.wb).listen()
 })
 
 app.on('window-all-closed', () => {

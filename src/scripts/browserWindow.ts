@@ -1,4 +1,4 @@
-import { BrowserWindow, nativeTheme } from 'electron'
+import { BrowserWindow } from 'electron'
 
 export default class mainWindow {
 
@@ -14,11 +14,13 @@ export default class mainWindow {
     },
     autoHideMenuBar: true
   }
+
   private url:string = require('url').format({
     protocol: 'file',
     slashes: true,
     pathname: require('path').join(__dirname, '../html/index.html')
   })
+
   public wb:BrowserWindow
 
   initWebBrowser() {
