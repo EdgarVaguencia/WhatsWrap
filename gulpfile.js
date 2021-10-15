@@ -5,6 +5,12 @@ const manifest = require('./src/package.json')
 const cp = require('child_process')
 let debInstall, electronInstaller
 
+function icons (done) {
+  gulp.src('src/icons/*.png')
+    .pipe(gulp.dest('dist/icons'))
+  done()
+}
+
 function html (done) {
   gulp.src('src/html/*.html')
     .pipe(gulp.dest('dist/html'))
@@ -69,7 +75,7 @@ function tsFiles (done) {
   done()
 }
 
-gulp.task('build', gulp.parallel(html, stylus, packages, node, md, tsFiles))
+gulp.task('build', gulp.parallel(icons, html, stylus, packages, node, md, tsFiles))
 
 gulp.task('pack:win32', gulp.series('build', function interPackWin (done) {
   const isDev = manifest.dev ? '_dev' : ''

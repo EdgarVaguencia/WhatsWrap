@@ -5,7 +5,7 @@
  * la "API"
  *
  */
-import {remote} from 'electron'
+import {dialog} from 'electron'
 const csvParse = require('csv-to-array')
 import utils from '../../manager/utils'
 
@@ -16,7 +16,7 @@ class data {
 
 export default class fileUpload extends utils{
   openFile() {
-    remote.dialog.showOpenDialog(null, {
+    dialog.showOpenDialog(null, {
       title: 'Selecciona un archivo',
       properties: ['openFile'],
       filters: [{name: 'CSV', extensions: ['csv']}]

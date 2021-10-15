@@ -1,5 +1,6 @@
 import {ipcRenderer} from 'electron'
-import * as request from 'request'
+// import * as request from 'request'
+import axios from 'axios'
 import util from '../../manager/utils'
 
 interface lf {
@@ -37,34 +38,34 @@ export default class LastFm extends util {
   updStatus() {
     if (this.options.apiKey.length > 0) {
       this.isConnected = true
-      this.getCurrentScrobbling().then((d: lf) => {
-        this.updateStatus(`${this.getEmoji('headphone')} ${d.name} By ${d.artist['#text']}`)
-      })
+      this.getCurrentScrobbling()
+        .then((d:lf) => {
+          if (d) {
+            this.updateStatus(`${this.getEmoji('headphone')} ${d.name} By ${d.artist['#text']}`)
+          }
+        })
     } else {
       this.isConnected = false
     }
   }
 
-  private async getCurrentScrobbling() {
+  private getCurrentScrobbling() {
     this.log('getCurrentScrobbling...')
-    return await new Promise((resolve, reject) => {
-      var url = `${this.options.url}${this.options.user}&api_key=${this.options.apiKey}`
-      request.get(url, (err, resp, body) => {
-        if (resp.statusCode === 200) {
-          var data = JSON.parse(body)
+    var url = `${this.options.url}${this.options.user}&api_key=${this.options.apiKey}`
+    return axios.get(url)
+      .then(resp => {
+        if (resp.status === 200) {
           this.isConnected = this.isConnected ? this.isConnected : true
-          resolve(data.recenttracks.track[0])
-        }else {
-          ipcRenderer.send('newMessage',{tag: 'WatsWrap', body: 'Error al intentar conectarse', 'icon': ''})
-          this.isConnected = false
-          reject(resp.statusCode)
+          return resp.data['recenttracks']['track'][0];
         }
-        if (err) {
-          ipcRenderer.send('newMessage', {tag: 'LastFm', body: err})
-          reject()
-        }
+        ipcRenderer.send('newMessage',{tag: 'WatsWrap', body: 'Error al intentar conectarse', 'icon': ''})
+        this.isConnected = false
+        return
       })
-    })
+      .catch(err => {
+        ipcRenderer.send('newMessage', {tag: 'LastFm', body: err})
+        return
+      })
   }
 
   stopUpdate() {

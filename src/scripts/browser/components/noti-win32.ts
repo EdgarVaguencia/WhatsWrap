@@ -1,4 +1,4 @@
-import {remote} from 'electron'
+import { remote } from 'electron'
 
 export default class notificacion {
   private notifications:Object

@@ -10,7 +10,9 @@ export default class mainWindow {
     titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: true,
-      webviewTag: true
+      webviewTag: true,
+      //contextIsolation: false,
+      enableRemoteModule: true
     },
     autoHideMenuBar: true
   }
@@ -26,7 +28,8 @@ export default class mainWindow {
   initWebBrowser() {
     this.wb = new BrowserWindow(this.optionsMw)
     this.wb.center()
-    this.wb.loadURL(this.url)
+    this.wb.loadFile(require('path').join(__dirname, '../html/index.html'))
+    // this.wb.loadURL(this.url)
 
     if (process.env['isDev'] === 'true'){
       this.wb.webContents.openDevTools()
